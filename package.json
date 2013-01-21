@@ -1,9 +1,5 @@
 {
-  "author": {
-    "name": "AJ ONeal",
-    "email": "coolaj86@gmail.com",
-    "url": "http://coolaj86.info"
-  },
+  "author": "Roman Shtylman <shtylman@gmail.com>",
   "name": "process",
   "description": "process information for node.js and browsers",
   "keywords": [
