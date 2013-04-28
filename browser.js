@@ -50,3 +50,7 @@ process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
+
+process.exit = function () {
+    // nothing to exit.
+};
