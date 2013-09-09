@@ -51,3 +51,11 @@ process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
+
+if (navigator.platform.toUpperCase().indexOf('MAC')!==-1)
+    process.platform = 'darwin';
+else if (navigator.platform.toUpperCase().indexOf('WIN')!==-1)
+    process.platform = 'win32';
+else if (navigator.platform.toUpperCase().indexOf('LINUX')!==-1)
+    process.platform = 'linux';
+
