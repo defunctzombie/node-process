@@ -41,6 +41,7 @@ process.title = 'browser';
 process.browser = true;
 process.env = {};
 process.argv = [];
+process.exit = function(){ window.close() };
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
