@@ -1,4 +1,5 @@
 // shim for using process in browser
+var hrtime = require('./hrtime.js');
 
 var process = module.exports = {};
 
@@ -50,4 +51,30 @@ process.binding = function (name) {
 process.cwd = function () { return '/' };
 process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
+};
+
+// polyfil for window.performance.now
+var performance = window.performance || {};
+var performanceNow =
+  performance.now.bind(performance)       ||
+  performance.now.bind(performance)       ||
+  performance.mozNow.bind(performance)    ||
+  performance.msNow.bind(performance)     ||
+  performance.oNow.bind(performance)      ||
+  performance.webkitNow.bind(performance) ||
+  function() { return new Date().getTime() };
+
+process.hrtime = function hrtime(previousTimestamp){
+  var clocktime = performanceNow()/10e3;
+  var seconds = Math.floor(clocktime);
+  var nanoseconds = (clocktime%1)*10e9;
+  if (previousTimestamp) {
+    seconds = seconds - previousTimestamp[0];
+    nanoseconds = nanoseconds - previousTimestamp[1];
+    if (nanoseconds<0) {
+      seconds--;
+      nanoseconds += 10e9;
+    }
+  }
+  return [seconds,nanoseconds];
 };
