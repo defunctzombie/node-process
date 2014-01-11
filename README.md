@@ -8,7 +8,9 @@ Works in node.js and browsers via the browser.js shim provided with the module.
 
 The goal of this module is not to be a full-fledged alternative to the builtin process module. This module mostly exists to provide the nextTick functionality and nothing more. We keep this module lean because it will often be included by default by tools like browserify when it detects a module has used the `process` global.
 
-If you are looking to provide other process methods, I suggest you monkey patch them onto the process global in your app.
+If you are looking to provide other process methods, I suggest you monkey patch them onto the process global in your app. A list of user created patches is below.
+
+* [hrtime](https://github.com/kumavis/browser-process-hrtime)
 
 ## package manager notes
 
