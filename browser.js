@@ -42,10 +42,12 @@ process.browser = true;
 process.env = {};
 process.argv = [];
 
-process.on = function () {}
-process.once = function () {}
-process.off = function () {}
-process.emit = function () {}
+function noop() {}
+
+process.on = noop;
+process.once = noop;
+process.off = noop;
+process.emit = noop;
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
