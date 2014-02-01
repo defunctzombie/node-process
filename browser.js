@@ -42,6 +42,11 @@ process.browser = true;
 process.env = {};
 process.argv = [];
 
+process.on = function () {}
+process.once = function () {}
+process.off = function () {}
+process.emit = function () {}
+
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
 }
