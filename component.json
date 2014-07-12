@@ -1,0 +1,8 @@
+{
+  "name": "process",
+  "repo": "defunctzombie/node-process",
+  "version": "0.7.0",
+  "scripts": [
+    "browser.js"
+  ]
+}
