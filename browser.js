@@ -3,14 +3,35 @@
 var process = module.exports = {};
 
 process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-    && window.setImmediate;
-    var canPost = typeof window !== 'undefined'
-    && window.postMessage && window.addEventListener
-    ;
+    var canSetImmediate = typeof window !== 'undefined' && window.setImmediate;
+    var canMutationObserver = typeof window !== 'undefined' && typeof document !== 'undefined' && window.MutationObserver;
+    var canPost = typeof window !== 'undefined' && window.postMessage && window.addEventListener;
 
     if (canSetImmediate) {
         return function (f) { return window.setImmediate(f) };
+    }
+
+    if (canMutationObserver) {
+        return (function () {
+            var hiddenDiv = document.createElement("div");
+            var fns = [];
+            var observer = new MutationObserver(function () {
+                var fnList = fns.slice();
+                fns.length = 0;
+                fnList.forEach(function (fn) {
+                    fn();
+                });
+            });
+
+            observer.observe(hiddenDiv, { attributes: true });
+
+            return function nextTick(fn) {
+                if (!fns.length) {
+                    hiddenDiv.setAttribute('yes', 'no');
+                }
+                fns.push(fn);
+            };
+      })()
     }
 
     if (canPost) {
@@ -54,7 +75,7 @@ process.emit = noop;
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
-}
+};
 
 // TODO(shtylman)
 process.cwd = function () { return '/' };
