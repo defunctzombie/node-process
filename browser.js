@@ -5,7 +5,7 @@ function noop() {}
 module.exports = {
     nextTick : (function () {
         var win = typeof window !== 'undefined' && window,
-            doc = win && window.document,
+            doc = win && win.document,
 
             setImmediate = win && win.setImmediate,
             MutationObserver = doc && win.MutationObserver,
@@ -43,7 +43,7 @@ module.exports = {
             var msgData = 'process-tick';
             win.addEventListener('message', function (ev) {
                 var source = ev.source;
-                if ((source === window || source === null) && ev.data === msgData) {
+                if ((source === win || source === null) && ev.data === msgData) {
                     ev.stopPropagation();
                     if (queue.length > 0) {
                         queue.shift()();
@@ -66,7 +66,6 @@ module.exports = {
     browser: true,
     env: {},
     argv: [],
-
 
     on: noop,
     addListener: noop,
