@@ -3,9 +3,11 @@
 var process = module.exports = {};
 
 process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined' && window.setImmediate;
-    var canMutationObserver = typeof window !== 'undefined' && typeof document !== 'undefined' && window.MutationObserver;
-    var canPost = typeof window !== 'undefined' && window.postMessage && window.addEventListener;
+    var canSetImmediate = typeof window !== 'undefined'
+    && window.setImmediate;
+    var canPost = typeof window !== 'undefined'
+    && window.postMessage && window.addEventListener
+    ;
 
     if (canSetImmediate) {
         return function (f) { return window.setImmediate(f) };
