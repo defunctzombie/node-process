@@ -16,6 +16,6 @@
     "node": ">= 0.6.0"
   },
   "dependencies": {
-    "immediate": "^3.0.2"
+    "immediate": "3.0.3"
   }
 }
