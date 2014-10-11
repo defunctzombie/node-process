@@ -14,5 +14,8 @@
   "main": "./index.js",
   "engines": {
     "node": ">= 0.6.0"
+  },
+  "dependencies": {
+    "immediate": "3.0.3"
   }
 }
