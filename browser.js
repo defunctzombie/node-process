@@ -40,8 +40,13 @@ process.nextTick = (function () {
     if (canPost) {
         window.addEventListener('message', function (ev) {
             var source = ev.source;
-            if ((source === window || source === null) && ev.data === 'process-tick') {
-                ev.stopPropagation();
+            if ((source == window || source === null) && ev.data === 'process-tick') {
+                if (typeof ev.stopPropagation === 'function') {
+                    ev.stopPropagation();
+                }
+                else {
+                    ev.cancelBubble = true;
+                }
                 if (queue.length > 0) {
                     var fn = queue.shift();
                     fn();
