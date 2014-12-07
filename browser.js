@@ -12,7 +12,7 @@ process.nextTick = (function () {
     ;
 
     if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
+        return function (f) { window.setImmediate(f) };
     }
 
     var queue = [];
