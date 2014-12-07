@@ -9,12 +9,12 @@ function drainQueue() {
         return;
     }
     draining = true;
-    var currentQueue, i;
+    var currentQueue;
     var len = queue.length;
     while(len) {
         currentQueue = queue;
         queue = [];
-        i = -1;
+        var i = -1;
         while (++i < len) {
             currentQueue[i]();
         }
