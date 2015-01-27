@@ -12,7 +12,9 @@ process.nextTick = (function() {
             return function() {
                 resolvedPromise.then(drainQueue);
             };
-        } else if('function' === typeof Object.observe) {
+        }
+
+        if('function' === typeof Object.observe) {
             var obj = { prop: 1 };
 
             Object.observe(obj, drainQueue);
@@ -20,11 +22,11 @@ process.nextTick = (function() {
             return function() {
                 obj.prop = -obj.prop;
             };
-        } else {
-            return function() {
-                setTimeout(drainQueue, 0);
-            };
         }
+        
+        return function() {
+            setTimeout(drainQueue, 0);
+        };
     })();
 
     function drainQueue() {
