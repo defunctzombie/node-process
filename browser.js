@@ -1,33 +1,59 @@
 // shim for using process in browser
 
 var process = module.exports = {};
-var queue = [];
-var draining = false;
 
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    draining = true;
-    var currentQueue;
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        var i = -1;
-        while (++i < len) {
-            currentQueue[i]();
+process.nextTick = (function() {
+    var queue = [];
+    var draining = false;
+    var scheduleDraining = (function() {
+        if(('undefined' !== typeof Promise) && ('function' === typeof Promise.resolve)) {
+            var resolvedPromise = Promise.resolve();
+
+            return function() {
+                resolvedPromise.then(drainQueue);
+            };
+        } else if('function' === typeof Object.observe) {
+            var obj = { prop: 1 };
+
+            Object.observe(obj, drainQueue);
+
+            return function() {
+                obj.prop = -obj.prop;
+            };
+        } else {
+            return function() {
+                setTimeout(drainQueue, 0);
+            };
         }
-        len = queue.length;
+    })();
+
+    function drainQueue() {
+        if (draining) {
+            return;
+        }
+        draining = true;
+        var currentQueue;
+        var len = queue.length;
+        while(len) {
+            currentQueue = queue;
+            queue = [];
+            var i = -1;
+            while (++i < len) {
+                currentQueue[i]();
+            }
+            len = queue.length;
+        }
+        draining = false;
     }
-    draining = false;
-}
-process.nextTick = function (fun) {
-    queue.push(fun);
-    if (!draining) {
-        setTimeout(drainQueue, 0);
-    }
-};
+
+
+    return function nextTick(fun) {
+        queue.push(fun);
+        if (!draining) {
+            scheduleDraining();
+        }
+    };
+})();
 
 process.title = 'browser';
 process.browser = true;
