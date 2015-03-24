@@ -16,7 +16,13 @@ function drainQueue() {
         queue = [];
         var i = -1;
         while (++i < len) {
-            currentQueue[i]();
+            try {
+                currentQueue[i]();
+            } catch(e) {
+                setTimeout(function() {
+                    throw e;
+                },0);
+            }
         }
         len = queue.length;
     }
