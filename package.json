@@ -13,6 +13,7 @@
     "type": "git",
     "url": "git://github.com/shtylman/node-process.git"
   },
+  "license": "MIT",
   "browser": "./browser.js",
   "main": "./index.js",
   "engines": {
