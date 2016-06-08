@@ -63,4 +63,26 @@ function test (ourProcess) {
         });
         });
     });
+
+    describe('rename globals', function (t) {
+      it('throws an error', function (done){
+        var oldTimeout = setTimeout;
+        setTimeout = function () {
+          setTimeout = oldTimeout;
+          assert.ok(false);
+          done();
+        }
+        var oldClear = clearTimeout;
+        clearTimeout = function () {
+          clearTimeout = oldClear;
+          assert.ok(false);
+          done();
+        }
+        ourProcess.nextTick(function () {
+          assert.ok(true);
+          setTimeout = oldTimeout;
+          done();
+        });
+      });
+    });
 }
