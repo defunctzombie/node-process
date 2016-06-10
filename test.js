@@ -65,27 +65,43 @@ function test (ourProcess) {
     });
 
     describe('rename globals', function (t) {
-      it('throws an error', function (done){
-        var oldTimeout = setTimeout;
-        var oldClear = clearTimeout;
-        function cleanUp() {
-          setTimeout = oldTimeout;
-          clearTimeout = oldClear;
-        }
-        setTimeout = function () {
-          cleanUp();
-          assert.ok(false);
-          done();
-        }
+      var oldTimeout = setTimeout;
+      var oldClear = clearTimeout;
 
+      it('clearTimeout', function (done){
+
+        var ok = true;
         clearTimeout = function () {
-          cleanUp();
-          assert.ok(false);
-          done();
+          ok = false;
         }
         ourProcess.nextTick(function () {
-          cleanUp();
-          assert.ok(true);
+          setTimeout(function () {
+            clearTimeout = oldClear;
+            var err;
+            try {
+              assert.ok(ok, 'fake clearTimeout ran');
+            } catch (e) {
+              err = e;
+            }
+            done(err);
+          }, 50);
+        });
+      });
+      it('just setTimeout', function (done){
+
+
+        setTimeout = function () {
+          setTimeout = oldTimeout;
+          try {
+            assert.ok(false, 'fake setTimeout called')
+          } catch (e) {
+            done(e);
+          }
+
+        }
+
+        ourProcess.nextTick(function () {
+          setTimeout = oldTimeout;
           done();
         });
       });
