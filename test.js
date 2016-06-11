@@ -7,6 +7,7 @@ if (!process.browser) {
   describe('test against our shim', function () {
     test(ourProcess);
   });
+  vmtest();
 }
 function test (ourProcess) {
     describe('test arguments', function (t) {
@@ -106,4 +107,37 @@ function test (ourProcess) {
         });
       });
     });
+}
+function vmtest() {
+  var vm = require('vm');
+  var fs = require('fs');
+  var process =  fs.readFileSync('./browser.js', {encoding: 'utf8'});
+
+
+  describe('should work in vm in strict mode with no globals', function () {
+    it('should parse', function (done) {
+      var str = '"use strict";var module = {exports:{}};';
+      str += process;
+      str += 'this.works = process.browser;';
+      var script = new vm.Script(str);
+      var context = {
+        works: false
+      };
+      script.runInNewContext(context);
+      assert.ok(context.works);
+      done();
+    });
+    it('setTimeout throws error', function (done) {
+      var str = '"use strict";var module = {exports:{}};';
+      str += process;
+      str += 'try {process.nextTick(function () {})} catch (e){this.works = e;}';
+      var script = new vm.Script(str);
+      var context = {
+        works: false
+      };
+      script.runInNewContext(context);
+      assert.ok(context.works);
+      done();
+    });
+  });
 }
