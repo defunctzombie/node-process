@@ -8,7 +8,7 @@
   "scripts": {
     "test": "mocha test.js"
   },
-  "version": "0.11.6",
+  "version": "0.11.7",
   "repository": {
     "type": "git",
     "url": "git://github.com/shtylman/node-process.git"
