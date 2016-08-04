@@ -29,14 +29,14 @@ function runTimeout(fun) {
     if (cachedSetTimeout === setTimeout) {
         return setTimeout(fun, 0);
     } else {
-        return cachedSetTimeout.call(null, fun, 0);
+        return cachedSetTimeout(fun, 0);
     }
 }
 function runClearTimeout(marker) {
     if (cachedClearTimeout === clearTimeout) {
         clearTimeout(marker);
     } else {
-        cachedClearTimeout.call(null, marker);
+        cachedClearTimeout(marker);
     }
 }
 var queue = [];
