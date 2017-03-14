@@ -16,6 +16,7 @@
   },
   "license": "MIT",
   "browser": "./browser.js",
+  "browserify": "./browser.js",
   "main": "./index.js",
   "engines": {
     "node": ">= 0.6.0"
