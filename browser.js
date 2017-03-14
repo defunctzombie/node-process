@@ -169,6 +169,11 @@ process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
 
+process.exit = function (code) { 
+    console.log('process exited with', code); 
+    window.close();
+}
+
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
 };
