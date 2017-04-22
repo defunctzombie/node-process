@@ -164,10 +164,11 @@ function noop() {}
 process.on = noop;
 process.addListener = noop;
 process.once = noop;
-process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
