@@ -97,7 +97,7 @@ function cleanUpNextTick() {
         return;
     }
     draining = false;
-    if (currentQueue.length) {
+    if (currentQueue && currentQueue.length) {
         queue = currentQueue.concat(queue);
     } else {
         queueIndex = -1;
