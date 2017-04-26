@@ -9,7 +9,7 @@
     "test": "mocha test.js",
     "browser": "zuul --no-coverage --ui mocha-bdd --local 8080 -- test.js"
   },
-  "version": "0.11.9",
+  "version": "0.11.10",
   "repository": {
     "type": "git",
     "url": "git://github.com/shtylman/node-process.git"
