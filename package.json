@@ -22,6 +22,6 @@
   },
   "devDependencies": {
     "mocha": "2.2.1",
-    "zuul": "^3.10.3"
+    "zuul": "^3.11.1"
   }
 }
