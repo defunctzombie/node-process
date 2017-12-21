@@ -9,7 +9,7 @@ var process = module.exports = {};
 var cachedSetTimeout;
 var cachedClearTimeout;
 
-function defaultSetTimout() {
+function defaultSetTimeout() {
     throw new Error('setTimeout has not been defined');
 }
 function defaultClearTimeout () {
@@ -20,10 +20,10 @@ function defaultClearTimeout () {
         if (typeof setTimeout === 'function') {
             cachedSetTimeout = setTimeout;
         } else {
-            cachedSetTimeout = defaultSetTimout;
+            cachedSetTimeout = defaultSetTimeout;
         }
     } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
+        cachedSetTimeout = defaultSetTimeout;
     }
     try {
         if (typeof clearTimeout === 'function') {
@@ -41,7 +41,7 @@ function runTimeout(fun) {
         return setTimeout(fun, 0);
     }
     // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+    if ((cachedSetTimeout === defaultSetTimeout || !cachedSetTimeout) && setTimeout) {
         cachedSetTimeout = setTimeout;
         return setTimeout(fun, 0);
     }
