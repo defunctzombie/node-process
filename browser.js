@@ -6,6 +6,8 @@ var process = module.exports = {};
 // wrapped in strict mode code which doesn't define any globals.  It's inside a
 // function because try/catches deoptimize in certain engines.
 
+process.execArgv = [];
+
 var cachedSetTimeout;
 var cachedClearTimeout;
 
@@ -174,11 +176,13 @@ process.prependOnceListener = noop;
 process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
-    throw new Error('process.binding is not supported');
+    // not supported in the browser, all we can do is return an empty object 
+    return {};
 };
 
 process.cwd = function () { return '/' };
+
 process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
+    // noop
 };
 process.umask = function() { return 0; };
