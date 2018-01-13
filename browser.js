@@ -156,6 +156,7 @@ process.title = 'browser';
 process.browser = true;
 process.env = {};
 process.argv = [];
+process.platform = 'browser';
 process.version = ''; // empty string to avoid regexp issues
 process.versions = {};
 
