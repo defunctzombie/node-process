@@ -170,6 +170,7 @@ process.removeAllListeners = noop;
 process.emit = noop;
 process.prependListener = noop;
 process.prependOnceListener = noop;
+process.emitWarning = noop;
 
 process.listeners = function (name) { return [] }
 
