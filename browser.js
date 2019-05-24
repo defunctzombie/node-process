@@ -182,3 +182,4 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 process.umask = function() { return 0; };
+process.toString = function() { return "[object process]" };
