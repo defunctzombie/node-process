@@ -131,6 +131,8 @@ function drainQueue() {
     runClearTimeout(timeout);
 }
 
+var hasQueueMicrotask = typeof queueMicrotask === 'function';
+
 process.nextTick = function (fun) {
     var args = new Array(arguments.length - 1);
     if (arguments.length > 1) {
@@ -138,6 +140,13 @@ process.nextTick = function (fun) {
             args[i - 1] = arguments[i];
         }
     }
+
+    if (hasQueueMicrotask) {
+        return queueMicrotask(function () {
+            fun.apply(null, args);
+        });
+    }
+
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
         runTimeout(drainQueue);
