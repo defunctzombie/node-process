@@ -8,6 +8,7 @@ var process = module.exports = {};
 
 var cachedSetTimeout;
 var cachedClearTimeout;
+var cachedQueueMicrotask
 
 function defaultSetTimeout() {
     throw new Error('setTimeout has not been defined');
@@ -34,6 +35,11 @@ function defaultClearTimeout () {
     } catch (e) {
         cachedClearTimeout = defaultClearTimeout;
     }
+    try {
+        if (typeof queueMicrotask === 'function') {
+            cachedQueueMicrotask = queueMicrotask
+        }
+    } catch (e) {}
 } ())
 function runTimeout(fun) {
     if (cachedSetTimeout === setTimeout) {
@@ -131,7 +137,7 @@ function drainQueue() {
     runClearTimeout(timeout);
 }
 
-var hasQueueMicrotask = typeof queueMicrotask === 'function';
+;
 
 process.nextTick = function (fun) {
     var args = new Array(arguments.length - 1);
@@ -141,8 +147,8 @@ process.nextTick = function (fun) {
         }
     }
 
-    if (hasQueueMicrotask) {
-        return queueMicrotask(function () {
+    if (cachedQueueMicrotask) {
+        return cachedQueueMicrotask(function () {
             fun.apply(null, args);
         });
     }
