@@ -17,13 +17,18 @@ function defaultClearTimeout () {
     throw new Error('clearTimeout has not been defined');
 }
 function detectQueueMicrotask () {
+    if (cachedQueueMicrotask) {
+        return true;
+    }
     try {
         if (cachedQueueMicrotask !== queueMicrotask) {
             cachedQueueMicrotask = queueMicrotask;
+            return true;
         }
-
-        return cachedQueueMicrotask !== undefined;
-    } catch (e) {}
+        return false;
+    } catch (e) {
+        return false;
+    }
 }
 (function () {
     try {
@@ -141,8 +146,6 @@ function drainQueue() {
     draining = false;
     runClearTimeout(timeout);
 }
-
-;
 
 process.nextTick = function (fun) {
     var args = new Array(arguments.length - 1);
