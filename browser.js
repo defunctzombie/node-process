@@ -16,6 +16,15 @@ function defaultSetTimeout() {
 function defaultClearTimeout () {
     throw new Error('clearTimeout has not been defined');
 }
+function detectQueueMicrotask () {
+    try {
+        if (cachedQueueMicrotask !== queueMicrotask) {
+            cachedQueueMicrotask = queueMicrotask;
+        }
+
+        return cachedQueueMicrotask !== undefined;
+    } catch (e) {}
+}
 (function () {
     try {
         if (typeof setTimeout === 'function') {
@@ -35,11 +44,7 @@ function defaultClearTimeout () {
     } catch (e) {
         cachedClearTimeout = defaultClearTimeout;
     }
-    try {
-        if (typeof queueMicrotask === 'function') {
-            cachedQueueMicrotask = queueMicrotask
-        }
-    } catch (e) {}
+    detectQueueMicrotask();
 } ())
 function runTimeout(fun) {
     if (cachedSetTimeout === setTimeout) {
@@ -147,14 +152,12 @@ process.nextTick = function (fun) {
         }
     }
 
-    if (cachedQueueMicrotask) {
-        return cachedQueueMicrotask(function () {
-            fun.apply(null, args);
-        });
-    }
-
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
+        if (detectQueueMicrotask()) {
+            return cachedQueueMicrotask(drainQueue);
+        }
+
         runTimeout(drainQueue);
     }
 };
