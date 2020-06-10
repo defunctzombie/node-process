@@ -8,12 +8,27 @@ var process = module.exports = {};
 
 var cachedSetTimeout;
 var cachedClearTimeout;
+var cachedQueueMicrotask
 
 function defaultSetTimeout() {
     throw new Error('setTimeout has not been defined');
 }
 function defaultClearTimeout () {
     throw new Error('clearTimeout has not been defined');
+}
+function detectQueueMicrotask () {
+    if (cachedQueueMicrotask) {
+        return true;
+    }
+    try {
+        if (cachedQueueMicrotask !== queueMicrotask) {
+            cachedQueueMicrotask = queueMicrotask;
+            return true;
+        }
+        return false;
+    } catch (e) {
+        return false;
+    }
 }
 (function () {
     try {
@@ -34,6 +49,7 @@ function defaultClearTimeout () {
     } catch (e) {
         cachedClearTimeout = defaultClearTimeout;
     }
+    detectQueueMicrotask();
 } ())
 function runTimeout(fun) {
     if (cachedSetTimeout === setTimeout) {
@@ -138,8 +154,13 @@ process.nextTick = function (fun) {
             args[i - 1] = arguments[i];
         }
     }
+
     queue.push(new Item(fun, args));
     if (queue.length === 1 && !draining) {
+        if (detectQueueMicrotask()) {
+            return cachedQueueMicrotask(drainQueue);
+        }
+
         runTimeout(drainQueue);
     }
 };
