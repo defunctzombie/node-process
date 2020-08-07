@@ -33,7 +33,7 @@ function test (ourProcess) {
           }, 1);
           ourProcess.nextTick(function (num) {
 
-              assert.equal(num, order++, '3rd schedualed happens after the error');
+              assert.equal(num, order++, '3rd scheduled happens after the error');
           }, 2);
         });
     });
@@ -45,7 +45,7 @@ if (!process.browser) {
         process.once('uncaughtException', function(err) {
             assert.equal(2, order++, 'error is third');
             ourProcess.nextTick(function () {
-                assert.equal(5, order++, 'schedualed in error is last');
+                assert.equal(5, order++, 'scheduled in error is last');
                 done();
             });
         });
@@ -60,7 +60,7 @@ if (!process.browser) {
             throw(new Error('an error is thrown'));
         });
         ourProcess.nextTick(function () {
-            assert.equal(3, order++, '3rd schedualed happens after the error');
+            assert.equal(3, order++, '3rd scheduled happens after the error');
         });
         });
     });
